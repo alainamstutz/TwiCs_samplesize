@@ -31,6 +31,7 @@ library(ggplot2) # survival/TTE analyses and other graphs
 4. Reeves et al: https://pubmed.ncbi.nlm.nih.gov/29277558/
 5. Pate et al: https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-016-0208-1 
 6. Candlish et al: https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-017-0295-7 
+7. Van der Velden et al: https://academic.oup.com/ije/article/46/1/96/2617171?login=false 
 
 ## General remarks
 1. Traditionally, the idea of TwiCs was about *random sampling*, i.e. randomize a few and ALL remaining eligible cohort participants are control => unequal allocation: 
