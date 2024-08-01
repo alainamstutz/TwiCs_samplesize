@@ -1,6 +1,55 @@
 ---
 title: "TwiCs_samplesize"
 author: "A.Amstutz"
-date: "2024-08-01"
-output: html_document
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output:
+  html_document:
+    keep_md: yes
+    toc: TRUE
+    toc_float: TRUE
+    code_folding: hide
+  pdf_document:
+    toc: yes
 ---
+
+################################################################################
+# PREPARATION
+################################################################################
+## Load packages
+```{r load packages, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(tableone)
+library(here)
+library(kableExtra)
+library(ggplot2) # survival/TTE analyses and other graphs
+```
+
+## Resources
+1. Kessels et al: https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-023-01941-5
+2. Gal et al: https://pubmed.ncbi.nlm.nih.gov/31146022/ 
+3. Couwenberg et al: https://pubmed.ncbi.nlm.nih.gov/31866471/
+4. Reeves et al: https://pubmed.ncbi.nlm.nih.gov/29277558/
+5. Pate et al: https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-016-0208-1 
+6. Candlish et al: https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-017-0295-7 
+
+## General remarks
+1. Traditionally, the idea of TwiCs was about *random sampling*, i.e. randomize a few and ALL remaining eligible cohort participants are control => unequal allocation: 
+* e.g. Reeves et al. "all cohort participants eligible for the treatment are first identified and then a random sample selected and offered the treatment, which they can either consent to receive or decline. All remaining eligible patients — that is, all patients eligible for the treatment but not offered it — constitute the control arm" or Pate et al. "The same cohort can be used for multiple interventions. Each intervention is offered to a randomly selected sample of patients eligible for that intervention, who are then compared with the rest of the eligible patients from the cohort that are still being treated as usual"
+* Reeves et al. provide a step-by-step explanation of a TwiCs sample size calculation and the limitation of such an upfront batch-randomization when uptake is low: Massive cohort needed if uptake lower than 50%; and careful batch re-sampling/re-randomization ("top-up") of sample size in case of lower than anticipated uptake
+* Reeves et al.: "For comparison, Table 1 also shows the samples needed for a traditional pragmatic RCT under the same set of assumptions. There is a sharp contrast: the figures show that it would still be possible to fully power a traditional pragmatic RCT using the CLASSIC cohort with consent as low as 40%. However, at high consent rates — 70% or more — the TwiCs design has a considerable sample size advantage, requiring offering treatment to less than half as many patients as a traditional pragmatic RCT"
+
+2. Another advantage of the batch randomization is that all are flagged beforehand -> enrolment can be prepared
+
+3. Another disadvantage of batch randomisation is that you can't re-confirm eligibility at baseline
+
+4. Compromise: Use continuous randomization but with 2:1 allocation. 
+
+5. Because the question really is: Why not using all the other eligible cohort participants for control? However, the recruitment will last a bit longer, because more often randomized into control
+
+
+```{r}
+
+```
+
+
+
