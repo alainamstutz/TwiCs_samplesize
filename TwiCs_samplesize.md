@@ -45,17 +45,19 @@ library(pwr) # sample size calculation: https://cran.r-project.org/web/packages/
 5. Sample Size calculation for TwiCs, including non-uptake in intervention according to Reeves et al: 
 * Suppose that in RETUNE, the mean effect across all participants in the control arm will be 8.5%
 * Suppose that in RETUNE, the mean effect in patients who accept any smoking cessation intervention is 20% 
-* Suppose that in RETUNE, the mean effect in patients who accept any smoking cessation intervention is 0? or 8.5%? or 5%?
+* Suppose that in RETUNE, the mean effect in patients who accept any smoking cessation intervention is 0? or 8.5%? or 6%?
 * 100% uptake: effect delta will be 11.5%
 * If lower uptake, then intervention effect diluted: effect_int_uptake * non_uptake + effect_int_non_uptake * (1-non_uptake) => effect delta lower
 * attrition???
+* what is our max. budget in intervention, i.e. to how many can we offer the package? 300?
+* what is the max. eligible cohort? 1500?
 
 ## fix parameters
 
 ```r
 p_cont <- 0.085 # Estimated cessation proportion in control group
 p_int_uptake <- 0.2 # Estimated cessation proportion in intervention group, among uptakers
-p_int_non_uptake <- 0.05 # or 0.085 or 0 ??? # Estimated cessation proportion in intervention group, among non-uptakers
+p_int_non_uptake <- 0.085 # or 0.085 or 0 ??? # Estimated cessation proportion in intervention group, among non-uptakers
 alpha <- 0.05 # Significance level
 power <- 0.80 # Desired power 
 attrition <- 0.0 # attrition/LTFU rate across both arms?
@@ -73,7 +75,7 @@ cat("effect size delta with non-uptake incorporated in intervention:", effect_de
 ```
 
 ```
-## effect size delta with non-uptake incorporated in intervention: 0.07
+## effect size delta with non-uptake incorporated in intervention: 0.0805
 ```
 
 ## Standard sample size for a binary outcome / individual randomized trial / with 70% non-uptake incorporated in intervention
@@ -91,7 +93,7 @@ cat("Required Sample Size_pwr:", round(sample_size_final, 0))
 ```
 
 ```
-## Required Sample Size_pwr: 663
+## Required Sample Size_pwr: 518
 ```
 
 ```r
@@ -126,7 +128,7 @@ cat("effect size delta with non-uptake incorporated in intervention:", effect_de
 ```
 
 ```
-## effect size delta with non-uptake incorporated in intervention: 0.055
+## effect size delta with non-uptake incorporated in intervention: 0.069
 ```
 
 ## Standard sample size for a binary outcome / individual randomized trial / with 60% non-uptake incorporated in intervention
@@ -145,7 +147,7 @@ cat("Required Sample Size_pwr:", round(sample_size_final, 0))
 ```
 
 ```
-## Required Sample Size_pwr: 1022
+## Required Sample Size_pwr: 680
 ```
 
 ```r
@@ -166,7 +168,7 @@ cat("effect size delta with non-uptake incorporated in intervention:", effect_de
 ```
 
 ```
-## effect size delta with non-uptake incorporated in intervention: 0.04
+## effect size delta with non-uptake incorporated in intervention: 0.0575
 ```
 
 ## Standard sample size for a binary outcome / individual randomized trial / with 50% non-uptake incorporated in intervention
@@ -184,7 +186,7 @@ cat("Required Sample Size_pwr:", round(sample_size_final, 0))
 ```
 
 ```
-## Required Sample Size_pwr: 1828
+## Required Sample Size_pwr: 943
 ```
 
 ```r
@@ -193,13 +195,13 @@ plot(sample_size_1arm)
 
 ![](TwiCs_samplesize_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
-## Now, let's assume we can only offer treatment to max. 500 participants -> unequal allocation
+## Now, let's assume we can only offer treatment to max. 300 participants and max eligible cohort is 1500 -> unequal allocation
 ### with 50% non-uptake (all parameters see above)
 
 ### According to Reeves et al
 
 ```r
-n_int <- 500
+n_int <- 300
 n_cont <- (sample_size_1arm$n*n_int)/((2*n_int)-sample_size_1arm$n)
 n_tot <- n_cont + n_int
 
@@ -208,7 +210,7 @@ cat("Required Sample Size_unequal_cont:", round(n_cont, 0))
 ```
 
 ```
-## Required Sample Size_unequal_cont: 5320
+## Required Sample Size_unequal_cont: 1100
 ```
 
 ```r
@@ -217,7 +219,7 @@ cat("Required Sample Size_unequal_tot:", round(n_tot, 0))
 ```
 
 ```
-## Required Sample Size_unequal_tot: 5820
+## Required Sample Size_unequal_tot: 1400
 ```
 
 ## According to pwr
@@ -226,7 +228,7 @@ cat("Required Sample Size_unequal_tot:", round(n_tot, 0))
 sample_size_1arm <- pwr.2p2n.test(h = ES.h(p_int, p_cont), 
                            sig.level = alpha, 
                            power = power,
-                           n1 = 500,
+                           n1 = 300,
                            n2 = NULL, 
                            alternative = "two.sided") # for 1 arm
 n_int <- sample_size_1arm$n1
@@ -239,7 +241,7 @@ cat("Required Sample Size_unequal_cont_pwr:", round(n_cont, 0))
 ```
 
 ```
-## Required Sample Size_unequal_cont_pwr: 5320
+## Required Sample Size_unequal_cont_pwr: 1100
 ```
 
 ```r
@@ -248,7 +250,7 @@ cat("Required Sample Size_unequal_tot_pwr:", round(sample_size_final, 0))
 ```
 
 ```
-## Required Sample Size_unequal_tot_pwr: 5820
+## Required Sample Size_unequal_tot_pwr: 1400
 ```
 
 ```r
