@@ -1,7 +1,7 @@
 ---
 title: "TwiCs_samplesize"
 author: "A.Amstutz"
-date: "`r format(Sys.time(), '%Y-%m-%d')`"
+date: "2024-08-03"
 output:
   html_document:
     keep_md: yes
@@ -13,7 +13,8 @@ output:
 ---
 
 ## Load packages
-```{r load packages, echo=TRUE, message=FALSE, warning=FALSE}
+
+```r
 library(tidyverse)
 library(kableExtra)
 library(ggplot2) # survival/TTE analyses and other graphs
@@ -50,7 +51,8 @@ library(pwr) # sample size calculation: https://cran.r-project.org/web/packages/
 * attrition???
 
 ## fix parameters
-```{r}
+
+```r
 p_cont <- 0.085 # Estimated cessation proportion in control group
 p_int_uptake <- 0.2 # Estimated cessation proportion in intervention group, among uptakers
 p_int_non_uptake <- 0.05 # or 0.085 or 0 ??? # Estimated cessation proportion in intervention group, among non-uptakers
@@ -60,7 +62,8 @@ attrition <- 0.0 # attrition/LTFU rate across both arms?
 ```
 
 ## 70% non-uptake incorporated in intervention, according to Reeves et al
-```{r}
+
+```r
 non_uptake <- 0.7 # 70% uptake
 p_int <- (p_int_uptake*non_uptake) + (p_int_non_uptake*(1-non_uptake)) # Estimated proportion in intervention group, with non-uptake integrated
 effect_delta <- p_int-p_cont
@@ -69,8 +72,13 @@ effect_delta <- p_int-p_cont
 cat("effect size delta with non-uptake incorporated in intervention:", effect_delta)
 ```
 
+```
+## effect size delta with non-uptake incorporated in intervention: 0.07
+```
+
 ## Standard sample size for a binary outcome / individual randomized trial / with 70% non-uptake incorporated in intervention
-```{r}
+
+```r
 ### Use pwr
 # calculate the sample size using pwr, two-sided (effect could go either way) / https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html 
 sample_size_1arm <- pwr.2p.test(h = ES.h(p_int, p_cont), 
@@ -80,9 +88,19 @@ sample_size <- sample_size_1arm$n * 2 # total sample size
 sample_size_final <- sample_size + (sample_size * attrition) # inflate for attrition
 # print
 cat("Required Sample Size_pwr:", round(sample_size_final, 0))
+```
 
+```
+## Required Sample Size_pwr: 663
+```
+
+```r
 plot(sample_size_1arm)
+```
 
+![](TwiCs_samplesize_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
+```r
 ### manual calculation // yields the same result
 # Z_alpha_half <- qnorm(1 - alpha / 2) # translate into Z-distribution -> equals 0.975 (95% CI) 
 # Z_beta <- qnorm(power)
@@ -97,7 +115,8 @@ plot(sample_size_1arm)
 ```
 
 ## 60% non-uptake incorporated in intervention, according to Reeves et al
-```{r}
+
+```r
 non_uptake <- 0.6 # 60% uptake
 p_int <- (p_int_uptake*non_uptake) + (p_int_non_uptake*(1-non_uptake)) # Estimated proportion in intervention group, with non-uptake integrated
 effect_delta <- p_int-p_cont
@@ -106,8 +125,13 @@ effect_delta <- p_int-p_cont
 cat("effect size delta with non-uptake incorporated in intervention:", effect_delta)
 ```
 
+```
+## effect size delta with non-uptake incorporated in intervention: 0.055
+```
+
 ## Standard sample size for a binary outcome / individual randomized trial / with 60% non-uptake incorporated in intervention
-```{r}
+
+```r
 ### Use pwr
 # calculate the sample size using pwr, two-sided (effect could go either way) / https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html 
 sample_size_1arm <- pwr.2p.test(h = ES.h(p_int, p_cont), 
@@ -118,12 +142,21 @@ sample_size_final <- sample_size + (sample_size * attrition) # inflate for attri
 
 # print
 cat("Required Sample Size_pwr:", round(sample_size_final, 0))
+```
 
+```
+## Required Sample Size_pwr: 1022
+```
+
+```r
 plot(sample_size_1arm)
 ```
 
+![](TwiCs_samplesize_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
 ## 50% non-uptake incorporated in intervention, according to Reeves et al
-```{r}
+
+```r
 non_uptake <- 0.5 # 50% uptake
 p_int <- (p_int_uptake*non_uptake) + (p_int_non_uptake*(1-non_uptake)) # Estimated proportion in intervention group, with non-uptake integrated
 effect_delta <- p_int-p_cont
@@ -132,8 +165,13 @@ effect_delta <- p_int-p_cont
 cat("effect size delta with non-uptake incorporated in intervention:", effect_delta)
 ```
 
+```
+## effect size delta with non-uptake incorporated in intervention: 0.04
+```
+
 ## Standard sample size for a binary outcome / individual randomized trial / with 50% non-uptake incorporated in intervention
-```{r}
+
+```r
 ### Use pwr
 sample_size_1arm <- pwr.2p.test(h = ES.h(p_int, p_cont), 
                            sig.level = alpha, 
@@ -143,28 +181,48 @@ sample_size_final <- sample_size + (sample_size * attrition) # inflate for attri
 
 # print
 cat("Required Sample Size_pwr:", round(sample_size_final, 0))
+```
 
+```
+## Required Sample Size_pwr: 1828
+```
+
+```r
 plot(sample_size_1arm)
 ```
+
+![](TwiCs_samplesize_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
 ## Now, let's assume we can only offer treatment to max. 500 participants -> unequal allocation
 ### with 50% non-uptake (all parameters see above)
 
 ### According to Reeves et al
-```{r}
+
+```r
 n_int <- 500
 n_cont <- (sample_size_1arm$n*n_int)/((2*n_int)-sample_size_1arm$n)
 n_tot <- n_cont + n_int
 
 # print n_cont
 cat("Required Sample Size_unequal_cont:", round(n_cont, 0))
+```
 
+```
+## Required Sample Size_unequal_cont: 5320
+```
+
+```r
 # print n_tot
 cat("Required Sample Size_unequal_tot:", round(n_tot, 0))
 ```
 
+```
+## Required Sample Size_unequal_tot: 5820
+```
+
 ## According to pwr
-```{r}
+
+```r
 sample_size_1arm <- pwr.2p2n.test(h = ES.h(p_int, p_cont), 
                            sig.level = alpha, 
                            power = power,
@@ -178,13 +236,26 @@ sample_size_final <- n_tot + (n_tot * attrition) # inflate for attrition
 
 # print
 cat("Required Sample Size_unequal_cont_pwr:", round(n_cont, 0))
-
-# print
-cat("Required Sample Size_unequal_tot_pwr:", round(sample_size_final, 0))
-
-plot(sample_size_1arm)
+```
 
 ```
+## Required Sample Size_unequal_cont_pwr: 5320
+```
+
+```r
+# print
+cat("Required Sample Size_unequal_tot_pwr:", round(sample_size_final, 0))
+```
+
+```
+## Required Sample Size_unequal_tot_pwr: 5820
+```
+
+```r
+plot(sample_size_1arm)
+```
+
+![](TwiCs_samplesize_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 
 ## EXAMPLES
@@ -193,7 +264,8 @@ https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-017-2252-5
 "Sample size calculation
 The sample size calculation is based on the intention-to-treat analyses of the primary effectiveness outcome QoL (EORTC-QLQ-30) [30]. Here, we determine a clinically relevant difference as a difference of 10 points [30]. A difference of 10 points is realistic because in a previous exercise trial in patients with cancer, QoL in the intervention group improved by 15.1 points (SD 17.7) and in the control group by 6.1 points (SD 17.1) using the EORTC-QLQ-30 after the 12-week intervention [34, 35]. Therefore, using the control group data from the previous trial and the 10-point difference, we assume a 6-point increase in QoL in the control group and a 16-point increase in the intervention group, among patients who accept the intervention in this cmRCT. We expect an attendance rate of 70% in the intervention group and assume that the improvement in non-attenders randomized to the intervention group (30%) is equal to the improvement in the control group (i.e. 6 points). Furthermore, we assume that non-attendance does not impact the standard deviation. As a result, we estimate a mean improvement of 13 points in the intervention group ((70x16 + 30x6)/100 = 13) instead of 16 points and a mean improvement of 6 points in the control group. Using these numbers, standard deviations of 17.7 and 17.1, power of 80% and alpha of 0.05, we calculated that 98 patients are needed in each group.
 As we will use linear regression analyses adjusted for baseline, the correlation between baseline and follow up needs to be taken into account in the sample size calculation. Therefore, the calculated number of subjects should be multiplied by (1-ρ 2), plus one extra subject per group [36], where ρ represents the correlation between baseline and follow-up outcomes. In our previous trials [34, 35], we identified correlation of 0.4 between baseline and follow-up QoL. This leads to a final sample size of 83 patients per group (98*0.84 + 1). As recommended by Candlish [37], we will update the sample-size calculation before the end of the trial when the actual acceptance rate of the intervention deviates from the estimated rate and adapt the sample size accordingly."
-```{r}
+
+```r
 non_uptake <- 0.7 # 70% uptake
 mean_cont <- 6 # Estimated mean point increase in QoL in control
 sd_cont <- 17.1 # Estimated SD in QoL in control
@@ -209,8 +281,13 @@ effect_delta <- mean_int-mean_cont
 cat("effect size delta with non-uptake incorporated in intervention:", effect_delta)
 ```
 
+```
+## effect size delta with non-uptake incorporated in intervention: 7
+```
+
 #### Standard sample size for a cont outcome / individual randomized trial 
-```{r}
+
+```r
 ### Use pwr https://bookdown.org/pdr_higgins/rmrwr/sample-size-calculations-with-pwr.html / https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html 
 sd_pooled <- (sd_cont + sd_int + sd_int_non_uptake)/3
 d <- effect_delta/sd_pooled # Cohen’s d: Difference between the means at the endpoint, divided by the pooled standard deviation.
@@ -229,13 +306,18 @@ sample_size_final <- sample_size + (sample_size * attrition) # inflate for attri
 # print
 cat("Required Sample Size_pwr:", round(sample_size_final, 0))
 ```
+
+```
+## Required Sample Size_pwr: 198
+```
 => correct, see UMBRELLA-FIT (but they used ANCOVA, not t-test => further reduction in sample size)
 
 ### RECTAL-BOOST
 https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-015-0586-4 
 "Sample size considerations
 On the basis of our center’s experience, we assume that 13% of patients will reach pCR if undergoing sCRT. On the basis of a prediction model published by Appelt et al. [30], we expect the pCR rate to be 30% after 65 Gy treatment. Because we consider this study to constitute preliminary work for subsequent studies aimed at evaluating even higher dose increases, we deem it important to find an effect if there really is one, but less important to unjustly find an effect. Therefore, we will use a one-sided α of 15% because it is unlikely that the pCR rate after boost treatment plus sCRT will be lower than after sCRT alone, in combination with a power of 80% because we do not want to increase uncertainty when a negative result is achieved. We further expect that approximately 80% of the patients who receive a boost offer will accept it. Patients who are offered the boost treatment but refuse to undergo the boost will remain in the intervention arm for analysis but receive sCRT (Figure 1). We expect no cross-over from the control arm to the intervention arm, because only patients who are randomly selected to receive a boost offer are informed about and offered it, whereas all non-selected patients undergo standard treatment (that is, sCRT) without receiving information about the boost trial. Taking into account the estimated response rates, together with a 20% refusal rate in the intervention arm, we require 60 patients per arm to demonstrate a statistically significant difference. We expect to complete recruitment within 3 years."
-```{r}
+
+```r
 # Define the parameters
 p_cont <- 0.13
 non_uptake <- 0.8 # 80% uptake
@@ -248,8 +330,13 @@ effect_delta <- p_int-p_cont
 cat("effect size delta with non-uptake incorporated in intervention:", effect_delta)
 ```
 
+```
+## effect size delta with non-uptake incorporated in intervention: 0.136
+```
+
 #### Standard sample size for a prop outcome / individual randomized trial 
-```{r}
+
+```r
 ### Use pwr https://bookdown.org/pdr_higgins/rmrwr/sample-size-calculations-with-pwr.html / https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html 
 # Define the parameters
 p_int <- p_int 
@@ -267,7 +354,10 @@ sample_size <- sample_size_1arm$n * 2 # total sample size
 sample_size_final <- sample_size + (sample_size * attrition) # inflate for attrition
 # print
 cat("Required Sample Size_pwr:", round(sample_size_final, 0))
+```
 
+```
+## Required Sample Size_pwr: 118
 ```
 => correct, see RECTAL-BOOST
 
