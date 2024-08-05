@@ -1,7 +1,7 @@
 ---
 title: "TwiCs_samplesize"
 author: "A.Amstutz"
-date: "2024-08-04"
+date: "2024-08-05"
 output:
   html_document:
     keep_md: yes
@@ -77,7 +77,7 @@ library(pwr) # package for standard sample size calculations: https://cran.r-pro
 * We estimate that the mean effect in patients who accept any smoking cessation intervention is 20% 
 * We estimate that the mean effect in patients who accept any smoking cessation intervention is the same as in control (8.5%) - or 0? or 4%? or...?
 * With 100% uptake, we will have an effect delta of 11.5%
-* With lower uptake, then the intervention effect diluted as follows: (effect_int_uptake * non_uptake) + (effect_int_non_uptake * (1-non_uptake))
+* With lower uptake, then the intervention effect diluted as follows: (effect_int_uptake * uptake) + (effect_int_non_uptake * (1-uptake))
 * Since we use the principal stratum strategy for the intercurrent event "LTFU" without predicting outcomes (e.g. no multiple imputation) but simply excluding them, we need to account for it in the sample size calculation.
 * We estimate that there is 5% attrition across both arms? Transfer to other centers is not a problem as long as the transfer-in site is also part of the SHCS cohort routine data collection
 * Our max. budget in intervention is xxx? 300 participants?
@@ -96,11 +96,11 @@ power <- 0.80 # Desired power, keep it fixed at min. 80%
 attrition <- 0.05 # attrition/LTFU rate across both arms
 ```
 
-## 70% non-uptake incorporated in intervention, according to Reeves et al
+## 70% uptake incorporated in intervention, according to Reeves et al
 
 ```r
-non_uptake <- 0.7 # 70% uptake
-p_int <- (p_int_uptake*non_uptake) + (p_int_non_uptake*(1-non_uptake)) # Estimated proportion in intervention group, with non-uptake integrated
+uptake <- 0.7 # 70% uptake
+p_int <- (p_int_uptake*uptake) + (p_int_non_uptake*(1-uptake)) # Estimated proportion in intervention group, with non-uptake integrated
 effect_delta <- p_int-p_cont
 
 # print effect size
@@ -111,7 +111,7 @@ cat("effect size delta with non-uptake incorporated in intervention:", effect_de
 ## effect size delta with non-uptake incorporated in intervention: 0.0805
 ```
 
-## Standard sample size for a binary outcome / individual randomized trial / with 70% non-uptake incorporated in intervention
+## Standard sample size for a binary outcome / individual randomized trial / with 70% uptake incorporated in intervention
 
 ```r
 # Calculate the sample size using pwr, two-sided (effect could go either way) / https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html 
@@ -169,11 +169,11 @@ plot(sample_size_initial)
 # cat("Required Sample Size_manual:", round(sample_size_man_final, 0))
 ```
 
-## 60% non-uptake incorporated in intervention, according to Reeves et al
+## 60% uptake incorporated in intervention, according to Reeves et al
 
 ```r
-non_uptake <- 0.6 # 60% uptake
-p_int <- (p_int_uptake*non_uptake) + (p_int_non_uptake*(1-non_uptake)) # Estimated proportion in intervention group, with non-uptake integrated
+uptake <- 0.6 # 60% uptake
+p_int <- (p_int_uptake*uptake) + (p_int_non_uptake*(1-uptake)) # Estimated proportion in intervention group, with non-uptake integrated
 effect_delta <- p_int-p_cont
 
 # print effect size
@@ -184,7 +184,7 @@ cat("effect size delta with non-uptake incorporated in intervention:", effect_de
 ## effect size delta with non-uptake incorporated in intervention: 0.069
 ```
 
-## Standard sample size for a binary outcome / individual randomized trial / with 60% non-uptake incorporated in intervention
+## Standard sample size for a binary outcome / individual randomized trial / with 60% uptake incorporated in intervention
 
 ```r
 # Calculate the sample size using pwr, two-sided (effect could go either way) / https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html 
@@ -228,11 +228,11 @@ plot(sample_size_initial)
 
 ![](TwiCs_samplesize_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
-## 50% non-uptake incorporated in intervention, according to Reeves et al
+## 50% uptake incorporated in intervention, according to Reeves et al
 
 ```r
-non_uptake <- 0.5 # 50% uptake
-p_int <- (p_int_uptake*non_uptake) + (p_int_non_uptake*(1-non_uptake)) # Estimated proportion in intervention group, with non-uptake integrated
+uptake <- 0.5 # 50% uptake
+p_int <- (p_int_uptake*uptake) + (p_int_non_uptake*(1-uptake)) # Estimated proportion in intervention group, with non-uptake integrated
 effect_delta <- p_int-p_cont
 
 # print effect size
@@ -243,7 +243,7 @@ cat("effect size delta with non-uptake incorporated in intervention:", effect_de
 ## effect size delta with non-uptake incorporated in intervention: 0.0575
 ```
 
-## Standard sample size for a binary outcome / individual randomized trial / with 50% non-uptake incorporated in intervention
+## Standard sample size for a binary outcome / individual randomized trial / with 50% uptake incorporated in intervention
 
 ```r
 # Calculate the sample size using pwr, two-sided (effect could go either way) / https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html 
@@ -442,7 +442,7 @@ The sample size calculation is based on the intention-to-treat analyses of the p
 As we will use linear regression analyses adjusted for baseline, the correlation between baseline and follow up needs to be taken into account in the sample size calculation. Therefore, the calculated number of subjects should be multiplied by (1-ρ 2), plus one extra subject per group [36], where ρ represents the correlation between baseline and follow-up outcomes. In our previous trials [34, 35], we identified correlation of 0.4 between baseline and follow-up QoL. This leads to a final sample size of 83 patients per group (98*0.84 + 1). As recommended by Candlish [37], we will update the sample-size calculation before the end of the trial when the actual acceptance rate of the intervention deviates from the estimated rate and adapt the sample size accordingly."
 
 ```r
-non_uptake <- 0.7 # 70% uptake
+uptake <- 0.7 # 70% uptake
 mean_cont <- 6 # Estimated mean point increase in QoL in control
 sd_cont <- 17.1 # Estimated SD in QoL in control
 mean_int <- 16 # Estimated mean point increase in QoL in int
@@ -450,7 +450,7 @@ sd_int <- 17.7 # Estimated SD in QoL in int
 mean_int_non_uptake <- 6 # Estimated mean point increase in QoL in int, among non-uptakers
 sd_int_non_uptake <- 17.7 # Estimated SD in QoL in int, among non-uptakers
 
-mean_int <- (mean_int*non_uptake) + (mean_int_non_uptake*(1-non_uptake)) # Estimated mean point increase in intervention group, with non-uptake integrated
+mean_int <- (mean_int*uptake) + (mean_int_non_uptake*(1-uptake)) # Estimated mean point increase in intervention group, with non-uptake integrated
 effect_delta <- mean_int-mean_cont
 
 # print effect size
@@ -496,10 +496,10 @@ On the basis of our center’s experience, we assume that 13% of patients will r
 ```r
 # Define the parameters
 p_cont <- 0.13
-non_uptake <- 0.8 # 80% uptake
+uptake <- 0.8 # 80% uptake
 p_int_uptake <- 0.30
 p_int_non_uptake <- 0.13 # this is not explicitely mentioned, but makes sense since their intervention is an ADD-ON radio
-p_int <- (p_int_uptake*non_uptake) + (p_int_non_uptake*(1-non_uptake)) # Estimated proportion in intervention group, with non-uptake integrated
+p_int <- (p_int_uptake*uptake) + (p_int_non_uptake*(1-uptake)) # Estimated proportion in intervention group, with non-uptake integrated
 effect_delta <- p_int-p_cont
 
 # print effect size
