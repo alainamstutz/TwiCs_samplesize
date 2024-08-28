@@ -256,7 +256,7 @@ ggplot(filtered_data, aes(x = SampleSize, y = EffectSize)) +
   geom_text(data = label_data, aes(x = SampleSize, y = EffectSize, label = Label), 
             hjust = -0.1, vjust = -0.5, color = "red", size = 3) +
   labs(
-    title = "Sample Size vs. Effect Size (adj. for 5% attrition; power 80%; alpha 5%)",
+    title = "Sample Size vs. Effect Size (adj. for 3% attrition; power 80%; alpha 5%)",
     x = "Total Sample Size (equal allocation)",
     y = "Effect Size (Cohens' h)"
   ) +
