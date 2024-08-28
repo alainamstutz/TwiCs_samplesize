@@ -86,12 +86,12 @@ library(pwr) # package for standard sample size calculations: https://cran.r-pro
 
 ## Fix parameters
 ```{r}
-p_cont <- 0.085 # Estimated cessation proportion in control group
-p_int_uptake <- 0.2 # Estimated cessation proportion in intervention group, among uptakers
-p_int_non_uptake <- 0.085 # Estimated cessation proportion in intervention group, among non-uptakers
+p_cont <- 0.085 # Estimated cessation proportion in control group (see study protocol)
+p_int_uptake <- 0.2 # Estimated cessation proportion in intervention group, among uptakers (see study protocol)
+p_int_non_uptake <- 0.085 # Estimated cessation proportion in intervention group, among non-uptakers (see study protocol)
 alpha <- 0.05 # Significance level
 power <- 0.80 # Desired power, keep it fixed at min. 80%
-attrition <- 0.05 # attrition/LTFU rate across both arms
+attrition <- 0.03 # attrition/LTFU rate across both arms (see Updated SHCS cohort profile publication Scherrer et al.)
 ```
 
 ## 70% uptake incorporated in intervention, according to Reeves et al

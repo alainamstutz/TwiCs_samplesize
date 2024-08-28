@@ -1,7 +1,7 @@
 ---
 title: "TwiCs_samplesize"
 author: "A.Amstutz"
-date: "2024-08-05"
+date: "2024-08-28"
 output:
   html_document:
     keep_md: yes
@@ -88,12 +88,12 @@ library(pwr) # package for standard sample size calculations: https://cran.r-pro
 ## Fix parameters
 
 ```r
-p_cont <- 0.085 # Estimated cessation proportion in control group
-p_int_uptake <- 0.2 # Estimated cessation proportion in intervention group, among uptakers
-p_int_non_uptake <- 0.085 # Estimated cessation proportion in intervention group, among non-uptakers
+p_cont <- 0.085 # Estimated cessation proportion in control group (see study protocol)
+p_int_uptake <- 0.2 # Estimated cessation proportion in intervention group, among uptakers (see study protocol)
+p_int_non_uptake <- 0.085 # Estimated cessation proportion in intervention group, among non-uptakers (see study protocol)
 alpha <- 0.05 # Significance level
 power <- 0.80 # Desired power, keep it fixed at min. 80%
-attrition <- 0.05 # attrition/LTFU rate across both arms
+attrition <- 0.03 # attrition/LTFU rate across both arms (see Updated SHCS cohort profile publication Scherrer et al.)
 ```
 
 ## 70% uptake incorporated in intervention, according to Reeves et al
@@ -138,7 +138,7 @@ cat("Adjusted Sample Size per Arm (accounting for attrition):", ceiling(sample_s
 ```
 
 ```
-## Adjusted Sample Size per Arm (accounting for attrition): 273
+## Adjusted Sample Size per Arm (accounting for attrition): 267
 ```
 
 ```r
@@ -146,7 +146,7 @@ cat("Total Sample Size (incl. accounting for attrition):", ceiling(sample_size),
 ```
 
 ```
-## Total Sample Size (incl. accounting for attrition): 546
+## Total Sample Size (incl. accounting for attrition): 534
 ```
 
 ```r
@@ -211,7 +211,7 @@ cat("Adjusted Sample Size per Arm (accounting for attrition):", ceiling(sample_s
 ```
 
 ```
-## Adjusted Sample Size per Arm (accounting for attrition): 358
+## Adjusted Sample Size per Arm (accounting for attrition): 351
 ```
 
 ```r
@@ -219,7 +219,7 @@ cat("Total Sample Size (incl. accounting for attrition):", ceiling(sample_size),
 ```
 
 ```
-## Total Sample Size (incl. accounting for attrition): 716
+## Total Sample Size (incl. accounting for attrition): 702
 ```
 
 ```r
@@ -270,7 +270,7 @@ cat("Adjusted Sample Size per Arm (accounting for attrition):", ceiling(sample_s
 ```
 
 ```
-## Adjusted Sample Size per Arm (accounting for attrition): 497
+## Adjusted Sample Size per Arm (accounting for attrition): 486
 ```
 
 ```r
@@ -278,7 +278,7 @@ cat("Total Sample Size (incl. accounting for attrition):", ceiling(sample_size),
 ```
 
 ```
-## Total Sample Size (incl. accounting for attrition): 993
+## Total Sample Size (incl. accounting for attrition): 972
 ```
 
 ```r
@@ -381,7 +381,7 @@ cat("Adjusted Sample Size for Control Arm (accounting for attrition):", ceiling(
 ```
 
 ```
-## Adjusted Sample Size for Control Arm (accounting for attrition): 1158
+## Adjusted Sample Size for Control Arm (accounting for attrition): 1134
 ```
 
 ```r
@@ -389,7 +389,7 @@ cat("Total Adjusted Sample Size (accounting for attrition):", ceiling(n_tot_adju
 ```
 
 ```
-## Total Adjusted Sample Size (accounting for attrition): 1474
+## Total Adjusted Sample Size (accounting for attrition): 1443
 ```
 
 ### According to pwr
@@ -417,7 +417,7 @@ cat("Adjusted Sample Size for Control Arm (accounting for attrition):", ceiling(
 ```
 
 ```
-## Adjusted Sample Size for Control Arm (accounting for attrition): 1158
+## Adjusted Sample Size for Control Arm (accounting for attrition): 1134
 ```
 
 ```r
@@ -425,7 +425,7 @@ cat("Total Adjusted Sample Size (accounting for attrition):", ceiling(n_tot_adju
 ```
 
 ```
-## Total Adjusted Sample Size (accounting for attrition): 1474
+## Total Adjusted Sample Size (accounting for attrition): 1443
 ```
 
 ```r
@@ -484,7 +484,7 @@ cat("Required Sample Size_pwr:", round(sample_size_final, 0))
 ```
 
 ```
-## Required Sample Size_pwr: 208
+## Required Sample Size_pwr: 204
 ```
 => correct, see UMBRELLA-FIT (but they used ANCOVA, not t-test => further reduction in sample size)
 
