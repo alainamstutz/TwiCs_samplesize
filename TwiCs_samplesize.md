@@ -1,7 +1,7 @@
 ---
 title: "TwiCs_samplesize"
 author: "A.Amstutz"
-date: "2024-08-28"
+date: "2024-08-31"
 output:
   html_document:
     keep_md: yes
@@ -27,25 +27,27 @@ library(pwr) # package for standard sample size calculations: https://cran.r-pro
 * Provide a step-by-step guide how to calculate the sample size for a TwiCs
 * CLASSIC cohort: cohort of elderly people with comorbidities (n= ca. 4300) / TwiCs intervention: telephone coaching for lifestyle change
 * They show how they were not able to reach adequate power with a low uptake of ca. 40% even with a cohort of 4300 participants
-* However, the key point was (which is not discussed): They assumed ZERO effect among non-uptakers in intervention. This might be reasonable in their case, maybe not..
+* However, their key assumption was (which is not discussed): ZERO effect among non-uptakers in intervention. This might be reasonable in their case, but for sure not in ours.
 
 2. Pate et al: https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-016-0208-1 
 * Simulation study and sample size for a cluster-randomized TwiCs, including recommendation which IV estimator to use
-* They argue that TwiCs suffer from "dilution bias", and ITT will always be biased (hence, use an IV estimator)
+* They argue that TwiCs suffer from "dilution bias" (hence, use an IV estimator)
+* Disagree re "dilution bias", agree with Kessels et al (see below)
 
 3. Candlish et al: https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-017-0295-7 
 * Simulation study and sample size for a individual-randomized TwiCs, including recommendation which IV estimator to use
-* They argue that TwiCs suffer from "dilution bias", and ITT will always be biased (hence, use an IV estimator)
+* They argue that TwiCs suffer from "dilution bias" (hence, use an IV estimator)
+* Disagree re "dilution bias", agree with Kessels et al (see below)
 
 4. Kessels et al: https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-023-01941-5
 * Summary of methods challenges in TwiCs
 * Argue that the "dilution bias" outlined by Pate et al and Candlish et al are not biases, but a question of interpretation (treatment effect vs. offer of treatment effect): "The authors reveal that the larger the refusal rate, the more bias was found in the ITT effect [...], but that should not be interpreted as bias. Again, [dilution] bias in the ITT effect of a TwiCs study should not be seen as bias relative to the ITT effect of a standard RCT, but relative to its own definition."
 * I agree. However, of course, the non-uptake rate AFTER the TwiCs should be more or less the same as DURING the TwiCs. This will not always be the case, esp. when the TwiCs results are positive. 
-* Then, the real effect will be somewhere between the ITT and the IV effect - and thus, as Pate et al and Candlish et al suggest, it is recommended to always show both analyses, the ITT and an IV analysis. 
+* Then, the real effect will be somewhere between the ITT and the IV effect - and thus, as Pate et al and Candlish et al suggest, it is recommended to always show both analyses, the ITT and a per protocol analysis (using IV - or IPW)
 
 5. Van der Velden et al: https://academic.oup.com/ije/article/46/1/96/2617171?login=false 
-* Summary of how to analyse and interprete TwiCs
-* Argue against "dilution bias"
+* Summary of how to analyse and interpret TwiCs
+* They argue similar as Kessels et al. against a "dilution bias"
 * Explain how to use IV estimators in TwiCs and underlying IV assumptions
 
 6. Gal et al: https://pubmed.ncbi.nlm.nih.gov/31146022/
@@ -59,7 +61,7 @@ library(pwr) # package for standard sample size calculations: https://cran.r-pro
 * For detailed sample size calculation, see their study published study protocol 
 
 ## General remarks regarding random sampling and batch randomisation
-1. Traditionally, the idea of TwiCs was about *random sampling*, i.e. randomize a few and ALL remaining eligible cohort participants are control (=> unequal allocation!) and batch-randomisation (randomise all upfront)
+1. Traditionally, the idea of TwiCs was about *random sampling*, i.e. randomize a few and ALL remaining eligible cohort participants are control (=> unequal allocation) and batch-randomisation (randomise all upfront)
 * e.g. Reeves et al. "all cohort participants eligible for the treatment are first identified and then a random sample selected and offered the treatment, which they can either consent to receive or decline. All remaining eligible patients — that is, all patients eligible for the treatment but not offered it — constitute the control arm"
 * e.g. Pate et al. "The same cohort can be used for multiple interventions. Each intervention is offered to a randomly selected sample of patients eligible for that intervention, who are then compared with the rest of the eligible patients from the cohort that are still being treated as usual"
 * e.g. Van der Velden et al. "Moreover, the cohort allows for unequal randomization by making use of the (large) control group of the cohort. This may be especially attractive in the case of expensive experimental treatments, to reduce the costs of a trial."
@@ -72,28 +74,24 @@ library(pwr) # package for standard sample size calculations: https://cran.r-pro
 
 4. In TwiCs, a valid question remains: Why not using all the other eligible cohort participants for control since we have them anyway as part of the TwiCs/cohort setup?
 
-5. Sample Size calculation for RETUNE TwiCs, according to Reeves et al: 
-* We estimate that the mean effect across all participants in the control arm is 8.5%
-* We estimate that the mean effect in patients who accept any smoking cessation intervention is 20% 
-* We estimate that the mean effect in patients who accept any smoking cessation intervention is the same as in control (8.5%) - or 0? or 4%? or...?
+5. Sample Size calculation for RETUNE TwiCs, taking into account all guidance above and esp. sample size calculation according to Reeves et al: 
+* We estimate that the mean effect across all participants in the control arm is 8.5% (SHCS data)
+* We estimate that the mean effect in patients who accept any smoking cessation intervention is 20% (external data)
+* We estimate that the mean effect in patients who accept any smoking cessation intervention is the same as in control (there is no good argument against, can be justified)
 * With 100% uptake, we will have an effect delta of 11.5%
-* With lower uptake, then the intervention effect diluted as follows: (effect_int_uptake * uptake) + (effect_int_non_uptake * (1-uptake))
-* Since we use the principal stratum strategy for the intercurrent event "LTFU" without predicting outcomes (e.g. no multiple imputation) but simply excluding them, we need to account for it in the sample size calculation.
-* We estimate that there is 5% attrition across both arms? Transfer to other centers is not a problem as long as the transfer-in site is also part of the SHCS cohort routine data collection
-* Our max. budget in intervention is xxx? 300 participants?
-* Our max. eligible cohort across all enrolling sites is 1500 potentially eligible participants
-
-6. Re-discuss: a) Effect among non-uptakers, b) Attrition, c) Max. budget in intervention
+* With lower uptake, then the intervention effect becomes diluted as follows: (effect_int_uptake * uptake) + (effect_int_non_uptake * (1-uptake))
+* Since we use the principal stratum strategy for the intercurrent event "LTFU" without predicting outcomes (e.g. no multiple imputation) but simply excluding them, we need to account for it in the sample size calculation. We assume 3% attrition (SHCS data, updated cohort profile publication)
+* Our max. eligible cohort across the main enrolling sites is 1500 potentially eligible participants
 
 ## Fix parameters
 
 ```r
-p_cont <- 0.085 # Estimated cessation proportion in control group (see study protocol)
-p_int_uptake <- 0.2 # Estimated cessation proportion in intervention group, among uptakers (see study protocol)
-p_int_non_uptake <- 0.085 # Estimated cessation proportion in intervention group, among non-uptakers (see study protocol)
+p_cont <- 0.085 # Estimated cessation proportion in control group (see details in study protocol)
+p_int_uptake <- 0.2 # Estimated cessation proportion in intervention group, among uptakers (see details in study protocol)
+p_int_non_uptake <- 0.085 # Estimated cessation proportion in intervention group, among non-uptakers (see details in study protocol)
 alpha <- 0.05 # Significance level
 power <- 0.80 # Desired power, keep it fixed at min. 80%
-attrition <- 0.03 # attrition/LTFU rate across both arms (see Updated SHCS cohort profile publication Scherrer et al.)
+attrition <- 0.03 # attrition/LTFU rate across both arms (see updated SHCS cohort profile publication Scherrer et al.)
 ```
 
 ## 70% uptake incorporated in intervention, according to Reeves et al
@@ -156,7 +154,7 @@ plot(sample_size_initial)
 ![](TwiCs_samplesize_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 ```r
-### manual calculation // yields the same result!
+### manual calculation // yields the same result !
 # Z_alpha_half <- qnorm(1 - alpha / 2) # translate into Z-distribution -> equals 0.975 (95% CI) 
 # Z_beta <- qnorm(power)
 # 
@@ -364,75 +362,49 @@ ggplot(filtered_data, aes(x = SampleSize, y = EffectSize)) +
 ### According to Reeves et al
 
 ```r
-n_int <- 300
-n_cont <- (sample_size_initial$n*n_int)/((2*n_int)-sample_size_initial$n)
-
-# Adjust sample size for attrition, for n1 arm (intervention)
-n_int_adjusted <- n_int / (1 - attrition)
-
-# Adjust sample size for attrition, for n2 arm (control)
-n_cont_adjusted <- n_cont / (1 - attrition)
-
-# Total sample size, accounting for attrition
-n_tot_adjusted <- n_int_adjusted + n_cont_adjusted
-
-# print
-cat("Adjusted Sample Size for Control Arm (accounting for attrition):", ceiling(n_cont_adjusted), "\n")
-```
-
-```
-## Adjusted Sample Size for Control Arm (accounting for attrition): 1134
-```
-
-```r
-cat("Total Adjusted Sample Size (accounting for attrition):", ceiling(n_tot_adjusted), "\n")
-```
-
-```
-## Total Adjusted Sample Size (accounting for attrition): 1443
+# n_int <- 300
+# n_cont <- (sample_size_initial$n*n_int)/((2*n_int)-sample_size_initial$n)
+# 
+# # Adjust sample size for attrition, for n1 arm (intervention)
+# n_int_adjusted <- n_int / (1 - attrition)
+# 
+# # Adjust sample size for attrition, for n2 arm (control)
+# n_cont_adjusted <- n_cont / (1 - attrition)
+# 
+# # Total sample size, accounting for attrition
+# n_tot_adjusted <- n_int_adjusted + n_cont_adjusted
+# 
+# # print
+# cat("Adjusted Sample Size for Control Arm (accounting for attrition):", ceiling(n_cont_adjusted), "\n")
+# cat("Total Adjusted Sample Size (accounting for attrition):", ceiling(n_tot_adjusted), "\n")
 ```
 
 ### According to pwr
 
 ```r
-sample_size_1arm <- pwr.2p2n.test(h = ES.h(p_int, p_cont), 
-                           sig.level = alpha, 
-                           power = power,
-                           n1 = 300,
-                           n2 = NULL, 
-                           alternative = "two.sided") # for 1 arm
-
-# Adjust sample size for attrition, for n1 arm (intervention)
-n_int_adjusted <- sample_size_1arm$n1 / (1 - attrition)
-
-# Adjust sample size for attrition, for n2 arm (control)
-n_cont_adjusted <- sample_size_1arm$n2 / (1 - attrition)
-
-# Total sample size, accounting for attrition
-n_tot_adjusted <- n_int_adjusted + n_cont_adjusted
-
-
-# print
-cat("Adjusted Sample Size for Control Arm (accounting for attrition):", ceiling(n_cont_adjusted), "\n")
+# sample_size_1arm <- pwr.2p2n.test(h = ES.h(p_int, p_cont), 
+#                            sig.level = alpha, 
+#                            power = power,
+#                            n1 = 300,
+#                            n2 = NULL, 
+#                            alternative = "two.sided") # for 1 arm
+# 
+# # Adjust sample size for attrition, for n1 arm (intervention)
+# n_int_adjusted <- sample_size_1arm$n1 / (1 - attrition)
+# 
+# # Adjust sample size for attrition, for n2 arm (control)
+# n_cont_adjusted <- sample_size_1arm$n2 / (1 - attrition)
+# 
+# # Total sample size, accounting for attrition
+# n_tot_adjusted <- n_int_adjusted + n_cont_adjusted
+# 
+# 
+# # print
+# cat("Adjusted Sample Size for Control Arm (accounting for attrition):", ceiling(n_cont_adjusted), "\n")
+# cat("Total Adjusted Sample Size (accounting for attrition):", ceiling(n_tot_adjusted), "\n")
+# 
+# plot(sample_size_1arm)
 ```
-
-```
-## Adjusted Sample Size for Control Arm (accounting for attrition): 1134
-```
-
-```r
-cat("Total Adjusted Sample Size (accounting for attrition):", ceiling(n_tot_adjusted), "\n")
-```
-
-```
-## Total Adjusted Sample Size (accounting for attrition): 1443
-```
-
-```r
-plot(sample_size_1arm)
-```
-
-![](TwiCs_samplesize_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 ## EXAMPLES
 ### UMBRELLA-FIT
