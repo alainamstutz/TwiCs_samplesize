@@ -74,12 +74,12 @@ library(pwr) # package for standard sample size calculations: https://cran.r-pro
 
 4. In TwiCs, a valid question remains: Why not using all the other eligible cohort participants for control since we have them anyway as part of the TwiCs/cohort setup?
 
-5. Sample Size calculation for RETUNE TwiCs, taking into account all guidance above and esp. sample size calculation according to Reeves et al: 
+## Sample Size calculation for RETUNE TwiCs, taking into account all guidance and thoughts above
 * We estimate that the mean effect across all participants in the control arm is 8.5% (SHCS data)
 * We estimate that the mean effect in patients who accept any smoking cessation intervention is 20% (external data)
 * We estimate that the mean effect in patients who accept any smoking cessation intervention is the same as in control (there is no good argument against, can be justified)
 * With 100% uptake, we will have an effect delta of 11.5%
-* With lower uptake, then the intervention effect becomes diluted as follows: (effect_int_uptake * uptake) + (effect_int_non_uptake * (1-uptake))
+* With lower uptake, then the intervention effect becomes diluted as follows (Reeves et al.): (effect_int_uptake * uptake) + (effect_int_non_uptake * (1-uptake))
 * Since we use the principal stratum strategy for the intercurrent event "LTFU" without predicting outcomes (e.g. no multiple imputation) but simply excluding them, we need to account for it in the sample size calculation. We assume 3% attrition (SHCS data, updated cohort profile publication)
 * Our max. eligible cohort across the main enrolling sites is 1500 potentially eligible participants
 
